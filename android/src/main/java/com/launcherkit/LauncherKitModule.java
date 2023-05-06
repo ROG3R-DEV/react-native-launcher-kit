@@ -152,7 +152,7 @@ public class LauncherKitModule extends ReactContextBaseJavaModule {
       Intent intent = new Intent();
       intent.setPackage(packageName);
 
-      PackageManager pm = getPackageManager();
+      PackageManager pm = this.reactContext.getPackageManager();
       List<ResolveInfo> resolveInfos = pm.queryIntentActivities(intent, 0);
       Collections.sort(resolveInfos, new ResolveInfo.DisplayNameComparator(pm));
 
@@ -167,7 +167,7 @@ public class LauncherKitModule extends ReactContextBaseJavaModule {
                   Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
           i.setComponent(name);
 
-          startActivity(i);
+          this.reactContext.startActivity(i);
       }
   }
 
