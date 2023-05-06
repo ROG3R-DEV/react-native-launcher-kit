@@ -34,6 +34,10 @@ import android.util.Base64;
 import com.facebook.react.bridge.Callback;
 import android.provider.Settings;
 
+import android.content.ComponentName;
+import android.content.pm.ActivityInfo;
+import java.util.Collections;
+
 @ReactModule(name = LauncherKitModule.NAME)
 public class LauncherKitModule extends ReactContextBaseJavaModule {
   public static final String NAME = "LauncherKit";
