@@ -35,6 +35,17 @@ const LauncherKitHelper: LauncherKitHelperProps = {
       }
     });
   },
+  launchApp: async (bundleId: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      try {
+        LauncherKit.launchApp(bundleId);
+        return resolve();
+      } catch (error) {
+        if (__DEV__) console.error(error);
+        return reject(error);
+      }
+    });
+  },
   /**
    * Opens the settings screen of the device.
    *

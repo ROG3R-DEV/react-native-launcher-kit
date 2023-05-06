@@ -144,6 +144,30 @@ public class LauncherKitModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
+  private void launchApp(String packageName) {
+      Intent intent = new Intent();
+      intent.setPackage(packageName);
+
+      PackageManager pm = getPackageManager();
+      List<ResolveInfo> resolveInfos = pm.queryIntentActivities(intent, 0);
+      Collections.sort(resolveInfos, new ResolveInfo.DisplayNameComparator(pm));
+
+      if(resolveInfos.size() > 0) {
+          ResolveInfo launchable = resolveInfos.get(0);
+          ActivityInfo activity = launchable.activityInfo;
+          ComponentName name=new ComponentName(activity.applicationInfo.packageName,
+                  activity.name);
+          Intent i=new Intent(Intent.ACTION_MAIN);
+
+          i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                  Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+          i.setComponent(name);
+
+          startActivity(i);
+      }
+  }
+
+  @ReactMethod
   public void isPackageInstalled(String packageName, Callback cb) {
     PackageManager pm = this.reactContext.getPackageManager();
     try {
