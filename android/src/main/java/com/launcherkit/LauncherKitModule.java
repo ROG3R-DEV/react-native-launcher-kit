@@ -107,7 +107,8 @@ public class LauncherKitModule extends ReactContextBaseJavaModule {
   private List<String> getAllApps() {
     List<PackageInfo> packages = this.reactContext
       .getPackageManager()
-      .getInstalledPackages(0);
+      .getInstalledPackages(PackageManager.GET_ACTIVITIES);
+
 
     List<String> ret = new ArrayList<>();
     for (final PackageInfo p: packages) {
@@ -119,7 +120,8 @@ public class LauncherKitModule extends ReactContextBaseJavaModule {
   private List<String> getNonSystemApps() {
     List<PackageInfo> packages = this.reactContext
       .getPackageManager()
-      .getInstalledPackages(0);
+      .getInstalledPackages(PackageManager.GET_ACTIVITIES);
+
 
     List<String> ret = new ArrayList<>();
     for (final PackageInfo p: packages) {
@@ -131,11 +133,14 @@ public class LauncherKitModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  private void launchApplication(String packageName){
-    Intent launchIntent = this.reactContext.getPackageManager().getLaunchIntentForPackage(packageName);
-    if (launchIntent != null) {
-      this.reactContext.startActivity(launchIntent);//null pointer check in case package name was not found
-    }
+  private void launchApplication(String packageName, Promise promise) {
+      Intent launchIntent = this.reactContext.getPackageManager().getLaunchIntentForPackage(packageName);
+      if (launchIntent != null) {
+          this.reactContext.startActivity(launchIntent);
+          promise.resolve(true);
+      } else {
+          promise.reject(new Exception("Launch intent for package " + packageName + " is null."));
+      }
   }
 
   @ReactMethod

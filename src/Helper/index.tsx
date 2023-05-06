@@ -24,14 +24,16 @@ const LauncherKitHelper: LauncherKitHelperProps = {
    * @param bundleId The bundle ID of the app to launch.
    * @returns `true` if the app was successfully launched, `false` otherwise.
    */
-  launchApplication: (bundleId: string): boolean => {
-    try {
-      LauncherKit.launchApplication(bundleId);
-      return true;
-    } catch (error) {
-      if (__DEV__) console.error(error);
-      return false;
-    }
+  launchApplication: async (bundleId: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      try {
+        LauncherKit.launchApplication(bundleId);
+        return resolve();
+      } catch (error) {
+        if (__DEV__) console.error(error);
+        return reject(error);
+      }
+    });
   },
   /**
    * Opens the settings screen of the device.
@@ -115,7 +117,8 @@ const LauncherKitHelper: LauncherKitHelperProps = {
           resolve(result); // true
         })
         .catch((error: any) => {
-          if (__DEV__) console.error('Error opening set default launcher:', error);
+          if (__DEV__)
+            console.error('Error opening set default launcher:', error);
           reject(error);
         });
     }),
