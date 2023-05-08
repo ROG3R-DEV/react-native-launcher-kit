@@ -53,7 +53,7 @@ const LauncherKitHelper: LauncherKitHelperProps = {
   }): Promise<void> => {
     return new Promise((resolve, reject) => {
       try {
-        LauncherKit.startActiviity(config);
+        LauncherKit.startActivity(config);
         return resolve();
       } catch (error) {
         if (__DEV__) console.error(error);
