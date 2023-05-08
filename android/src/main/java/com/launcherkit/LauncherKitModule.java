@@ -172,6 +172,25 @@ public class LauncherKitModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
+  private void startActivity(ReadableMap config, Promise promise) {
+      try {
+          String action = config.getString("action");
+          String packageName = config.getString("package");
+          String value = config.getString("value");
+
+          Intent intent = new Intent(action);
+          ComponentName componentName = new ComponentName(packageName, value);
+          intent.setComponent(componentName);
+          intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+          this.reactContext.startActivity(intent);
+          promise.resolve(true);
+      } catch (Exception e) {
+          promise.reject(e);
+      }
+  }
+
+  @ReactMethod
   public void isPackageInstalled(String packageName, Callback cb) {
     PackageManager pm = this.reactContext.getPackageManager();
     try {

@@ -46,6 +46,22 @@ const LauncherKitHelper: LauncherKitHelperProps = {
       }
     });
   },
+  startActivity: async (config: {
+    action: string;
+    package: string;
+    value: string;
+  }): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      try {
+        LauncherKit.startActiviity(config);
+        return resolve();
+      } catch (error) {
+        if (__DEV__) console.error(error);
+        return reject(error);
+      }
+    });
+  },
+
   /**
    * Opens the settings screen of the device.
    *
